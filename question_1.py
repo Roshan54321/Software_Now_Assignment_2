@@ -61,3 +61,11 @@ def encryption(shift1, shift2):
         file.write(encrypted_text)
 
 
+def decryption(shift1, shift2):
+    with open("resources/encrypted_text.txt", "r") as file:
+        text = file.read()
+    decrypted_text = ''.join([decryption_letter(c, shift1, shift2) for c in text])
+    with open("resources/decrypted_text.txt", "w") as file:
+        file.write(decrypted_text)
+
+
