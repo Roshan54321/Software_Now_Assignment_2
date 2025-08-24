@@ -78,3 +78,19 @@ def verification():
     else:
         print("Mismatch found between original and decrypted texts.")
 
+def main():
+    try:
+        shift1, shift2 = map(int, input("Provide two shift values separated by space: ").split())
+        encryption(shift1, shift2)
+        decryption(shift1, shift2)
+        verification()
+    except ValueError:
+        print("Invalid input. Enter two integers separated by a space.")
+    except FileNotFoundError:
+        print("File not found. Make sure raw_text.txt exists in resources folder.")
+    except Exception as e:
+        print("Error:", e)
+
+
+if __name__ == "__main__":
+    main()
