@@ -68,4 +68,13 @@ def decryption(shift1, shift2):
     with open("resources/decrypted_text.txt", "w") as file:
         file.write(decrypted_text)
 
+def verification():
+    with open("resources/raw_text.txt", "r") as file:
+        raw_text = file.read()
+    with open("resources/decrypted_text.txt", "r") as file:
+        decrypted_text = file.read()
+    if raw_text == decrypted_text:
+        print("Encryption and decryption are consistent.")
+    else:
+        print("Mismatch found between original and decrypted texts.")
 
