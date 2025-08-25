@@ -2,6 +2,7 @@ import pandas as pd
 import glob
 import os
 
+#Process ALL .csv files in the temperatures folder
 def load_temperature_data(folder_path="resources/temperatures"):
     all_files = glob.glob(os.path.join(folder_path, "*.csv"))
     
@@ -16,6 +17,7 @@ def load_temperature_data(folder_path="resources/temperatures"):
     else:
         return pd.DataFrame()
 
+#Use Australian seasons: Summer (Dec-Feb), Autumn (Mar-May), Winter (Jun-Aug), Spring (Sep-Nov) 
 def assign_season(month):
     if month in [12, 1, 2]:
         return "Summer"
@@ -26,6 +28,7 @@ def assign_season(month):
     else:
         return "Spring"
 
+# Calculate the average temperature for each season across ALL stations and ALL years
 def calculate_seasonal_average(data):
     month_columns = ["January","February","March","April","May","June",
                      "July","August","September","October","November","December"]
@@ -47,8 +50,9 @@ def calculate_seasonal_average(data):
     
     with open("average_temp.txt", "w") as f:
         for season in ["Summer","Autumn","Winter","Spring"]:
-            avg = seasonal_sum[season] / seasonal_count[season]
-            f.write(f"{season}: {avg:.1f}°C\n")
+            avg = seasonal_sum[season] / seasonal_count[season] #avg = total / count
+            f.write(f"{season}: {avg:.1f}\u00B0C\n")
+
 
 def calculate_largest_temp_range(data):
     ranges = []
@@ -66,7 +70,8 @@ def calculate_largest_temp_range(data):
         with open("largest_temp_range_station.txt", "w") as f:
             for station, r, t_max, t_min in ranges:
                 if r == max_range:
-                    f.write(f"Station {station}: Range {r:.1f}°C (Max: {t_max:.1f}°C, Min: {t_min:.1f}°C)\n")
+                    f.write(f"Station {station}: Range {r:.1f}\u00B0C (Max: {t_max:.1f}\u00B0C, Min: {t_min:.1f}\u00B0C)\n")
+
 
 def calculate_temperature_stability(data):
     month_columns = ["January","February","March","April","May","June",
@@ -86,7 +91,22 @@ def calculate_temperature_stability(data):
         with open("temperature_stability_stations.txt", "w") as f:
             for station, std in stability:
                 if std == min_std:
-                    f.write(f"Most Stable: Station {station}: StdDev {std:.1f}°C\n")
+                    f.write(f"Most Stable: Station {station}: StdDev {std:.1f}\u00B0C\n")
+                    print(f"Most Stable: Station {station}: StdDev {std:.1f}\u00B0C")
+   
+
             for station, std in stability:
                 if std == max_std:
-                    f.write(f"Most Variable: Station {station}: StdDev {std:.1f}°C\n")
+                    f.write(f"Most Stable: Station {station}: StdDev {std:.1f} C\n")
+                    print(f"Most Variable: Station {station}: StdDev {std:.1f}\u00B0C")
+
+if __name__ == "__main__":
+    data = load_temperature_data("resources/temperatures")
+    
+    if data.empty:
+        print("No data found in resources/temperatures folder.")
+    else:
+        calculate_seasonal_average(data)
+        calculate_largest_temp_range(data)
+        calculate_temperature_stability(data)
+        print("Analysis complete. Output files generated.")
