@@ -49,3 +49,21 @@ def calculate_seasonal_average(data):
         for season in ["Summer","Autumn","Winter","Spring"]:
             avg = seasonal_sum[season] / seasonal_count[season]
             f.write(f"{season}: {avg:.1f}°C\n")
+
+def calculate_largest_temp_range(data):
+    ranges = []
+    month_columns = ["January","February","March","April","May","June",
+                     "July","August","September","October","November","December"]
+    
+    for idx, row in data.iterrows():
+        temps = pd.to_numeric(row[month_columns], errors='coerce').dropna()
+        if not temps.empty:
+            temp_range = temps.max() - temps.min()
+            ranges.append((row["STATION_NAME"], temp_range, temps.max(), temps.min()))
+    
+    if ranges:
+        max_range = max(ranges, key=lambda x: x[1])[1]
+        with open("largest_temp_range_station.txt", "w") as f:
+            for station, r, t_max, t_min in ranges:
+                if r == max_range:
+                    f.write(f"Station {station}: Range {r:.1f}°C (Max: {t_max:.1f}°C, Min: {t_min:.1f}°C)\n")
