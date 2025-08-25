@@ -67,3 +67,26 @@ def calculate_largest_temp_range(data):
             for station, r, t_max, t_min in ranges:
                 if r == max_range:
                     f.write(f"Station {station}: Range {r:.1f}°C (Max: {t_max:.1f}°C, Min: {t_min:.1f}°C)\n")
+
+def calculate_temperature_stability(data):
+    month_columns = ["January","February","March","April","May","June",
+                     "July","August","September","October","November","December"]
+    stability = []
+    
+    for idx, row in data.iterrows():
+        temps = pd.to_numeric(row[month_columns], errors='coerce').dropna()
+        if not temps.empty:
+            std_dev = temps.std()
+            stability.append((row["STATION_NAME"], std_dev))
+    
+    if stability:
+        min_std = min(stability, key=lambda x: x[1])[1]
+        max_std = max(stability, key=lambda x: x[1])[1]
+        
+        with open("temperature_stability_stations.txt", "w") as f:
+            for station, std in stability:
+                if std == min_std:
+                    f.write(f"Most Stable: Station {station}: StdDev {std:.1f}°C\n")
+            for station, std in stability:
+                if std == max_std:
+                    f.write(f"Most Variable: Station {station}: StdDev {std:.1f}°C\n")
