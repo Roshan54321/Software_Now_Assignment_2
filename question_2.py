@@ -15,3 +15,13 @@ def load_temperature_data(folder_path="resources/temperatures"):
         return combined_df
     else:
         return pd.DataFrame()
+
+def assign_season(month):
+    if month in [12, 1, 2]:
+        return "Summer"
+    elif month in [3, 4, 5]:
+        return "Autumn"
+    elif month in [6, 7, 8]:
+        return "Winter"
+    else:
+        return "Spring"
