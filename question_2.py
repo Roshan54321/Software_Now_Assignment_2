@@ -2,21 +2,37 @@ import pandas as pd
 import glob
 import os
 
-# Folder where CSV files are stored
-folder_path = os.path.join("resources", "temperatures")
+def load_temperature_data(folder_path="resources/temperatures"):
+    # Get all CSV files in the folder
+    all_files = glob.glob(os.path.join(folder_path, "*.csv"))
+    
+    # Read and combine all CSVs
+    df_list = []
+    for file in all_files:
+        df = pd.read_csv(file)
+        df_list.append(df)
+    
+    # Combine into one DataFrame
+    combined_df = pd.concat(df_list, ignore_index=True)
+    return combined_df
 
-# Get all csv files in folder
-csv_files = glob.glob(os.path.join(folder_path, "*.csv"))
+if __name__ == "__main__":
+    data = load_temperature_data()
+    print(data.head())  # preview first 5 rows
 
-# Read all csv files into a single dataframe
-dataframes = []
-for file in csv_files:
-    df = pd.read_csv(file)
-    dataframes.append(df)
 
-# Combine into one dataframe
-all_data = pd.concat(dataframes, ignore_index=True)
+def assign_season(month):
+    if month in [12, 1, 2]:
+        return "Summer"
+    elif month in [3, 4, 5]:
+        return "Autumn"
+    elif month in [6, 7, 8]:
+        return "Winter"
+    else:
+        return "Spring"
 
-print("Files loaded:", csv_files)
-print("Data preview:")
-print(all_data.head())
+if __name__ == "__main__":
+    data = load_temperature_data("Resources/Temparatures")
+    data['Month'] = pd.to_datetime(data['Date']).dt.month
+    data['Season'] = data['Month'].apply(assign_season)
+    print(data[['Date', 'Month', 'Season']].head())
