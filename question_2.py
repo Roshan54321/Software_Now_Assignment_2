@@ -51,7 +51,7 @@ def calculate_seasonal_average(data):
     with open("average_temp.txt", "w") as f:
         for season in ["Summer","Autumn","Winter","Spring"]:
             avg = seasonal_sum[season] / seasonal_count[season] #avg = total / count
-            f.write(f"{season}: {avg:.1f}\u00B0C\n")
+            f.write(f"{season}: {avg:.1f}C\n")
 
 
 def calculate_largest_temp_range(data):
@@ -70,7 +70,7 @@ def calculate_largest_temp_range(data):
         with open("largest_temp_range_station.txt", "w") as f:
             for station, r, t_max, t_min in ranges:
                 if r == max_range:
-                    f.write(f"Station {station}: Range {r:.1f}\u00B0C (Max: {t_max:.1f}\u00B0C, Min: {t_min:.1f}\u00B0C)\n")
+                    f.write(f"Station {station}: Range {r:.1f}C (Max: {t_max:.1f}C, Min: {t_min:.1f}C)\n")
 
 
 def calculate_temperature_stability(data):
@@ -81,24 +81,24 @@ def calculate_temperature_stability(data):
     for idx, row in data.iterrows():
         temps = pd.to_numeric(row[month_columns], errors='coerce').dropna()
         if not temps.empty:
-            std_dev = temps.std()
+            std_dev = temps.std() # Calculate standard deviation of the temperatures
             stability.append((row["STATION_NAME"], std_dev))
     
     if stability:
-        min_std = min(stability, key=lambda x: x[1])[1]
-        max_std = max(stability, key=lambda x: x[1])[1]
+        min_std = min(stability, key=lambda x: x[1])[1] # Find smallest standard deviation (most stable)
+        max_std = max(stability, key=lambda x: x[1])[1] # Find largest standard deviation (most variable)
         
         with open("temperature_stability_stations.txt", "w") as f:
             for station, std in stability:
                 if std == min_std:
-                    f.write(f"Most Stable: Station {station}: StdDev {std:.1f}\u00B0C\n")
-                    print(f"Most Stable: Station {station}: StdDev {std:.1f}\u00B0C")
+                    f.write(f"Most Stable: Station {station}: StdDev {std:.1f} C\n")
+                    # print(f"Most Stable: Station {station}: StdDev {std:.1f}\u00B0C")
    
 
             for station, std in stability:
                 if std == max_std:
                     f.write(f"Most Stable: Station {station}: StdDev {std:.1f} C\n")
-                    print(f"Most Variable: Station {station}: StdDev {std:.1f}\u00B0C")
+                    # print(f"Most Variable: Station {station}: StdDev {std:.1f}\u00B0C")
 
 if __name__ == "__main__":
     data = load_temperature_data("resources/temperatures")
