@@ -48,7 +48,7 @@ def calculate_seasonal_average(data):
         seasonal_sum[season] += valid_values.sum()
         seasonal_count[season] += valid_values.count()
     
-    with open("average_temp.txt", "w") as f:
+    with open("average_temp.txt", "w", encoding="utf-8") as f:
         for season in ["Summer","Autumn","Winter","Spring"]:
             avg = seasonal_sum[season] / seasonal_count[season] #avg = total / count
             f.write(f"{season}: {avg:.1f}\u00B0C\n")
