@@ -53,7 +53,7 @@ def calculate_seasonal_average(data):
             avg = seasonal_sum[season] / seasonal_count[season] #avg = total / count
             f.write(f"{season}: {avg:.1f}\u00B0C\n")
 
-
+# Find station with largest annual temperature range
 def calculate_largest_temp_range(data):
     ranges = []
     month_columns = ["January","February","March","April","May","June",
@@ -65,6 +65,7 @@ def calculate_largest_temp_range(data):
             temp_range = temps.max() - temps.min()
             ranges.append((row["STATION_NAME"], temp_range, temps.max(), temps.min()))
     
+    # Write the station with max range to file
     if ranges:
         max_range = max(ranges, key=lambda x: x[1])[1]
         with open("largest_temp_range_station.txt", "w", encoding="utf-8") as f:
@@ -84,6 +85,7 @@ def calculate_temperature_stability(data):
             std_dev = temps.std() # Calculate standard deviation of the temperatures
             stability.append((row["STATION_NAME"], std_dev))
     
+    # Write seasonal averages to file
     if stability:
         min_std = min(stability, key=lambda x: x[1])[1] # Find smallest standard deviation (most stable)
         max_std = max(stability, key=lambda x: x[1])[1] # Find largest standard deviation (most variable)
