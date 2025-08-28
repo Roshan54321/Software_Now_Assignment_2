@@ -1,1 +1,6 @@
 .env
+resources/decrypted_text.txt
+resources/encrypted_text.txt
+average_temp.txt
+largest_temp_range_station.txt
+temperature_stability_stations.txt

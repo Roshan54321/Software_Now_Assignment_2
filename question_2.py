@@ -2,7 +2,10 @@ import pandas as pd
 import glob
 import os
 
-#Process ALL .csv files in the temperatures folder
+MONTH_COLUMNS = ["January","February","March","April","May","June",
+                 "July","August","September","October","November","December"]
+
+# Process ALL .csv files in the temperatures folder
 def load_temperature_data(folder_path="resources/temperatures"):
     all_files = glob.glob(os.path.join(folder_path, "*.csv"))
     
@@ -17,7 +20,7 @@ def load_temperature_data(folder_path="resources/temperatures"):
     else:
         return pd.DataFrame()
 
-#Use Australian seasons: Summer (Dec-Feb), Autumn (Mar-May), Winter (Jun-Aug), Spring (Sep-Nov) 
+# Use Australian seasons: Summer (Dec-Feb), Autumn (Mar-May), Winter (Jun-Aug), Spring (Sep-Nov) 
 def assign_season(month):
     if month in [12, 1, 2]:
         return "Summer"
@@ -30,9 +33,6 @@ def assign_season(month):
 
 # Calculate the average temperature for each season across ALL stations and ALL years
 def calculate_seasonal_average(data):
-    month_columns = ["January","February","March","April","May","June",
-                     "July","August","September","October","November","December"]
-    
     seasonal_sum = {"Summer":0,"Autumn":0,"Winter":0,"Spring":0}
     seasonal_count = {"Summer":0,"Autumn":0,"Winter":0,"Spring":0}
     
@@ -41,7 +41,7 @@ def calculate_seasonal_average(data):
                        6:"Winter",7:"Winter",8:"Winter",
                        9:"Spring",10:"Spring",11:"Spring"}
     
-    for month_index, month in enumerate(month_columns, start=1):
+    for month_index, month in enumerate(MONTH_COLUMNS, start=1):
         month_data = pd.to_numeric(data[month], errors='coerce')
         valid_values = month_data.dropna()
         season = month_to_season[month_index]
@@ -56,11 +56,9 @@ def calculate_seasonal_average(data):
 # Find station with largest annual temperature range
 def calculate_largest_temp_range(data):
     ranges = []
-    month_columns = ["January","February","March","April","May","June",
-                     "July","August","September","October","November","December"]
     
     for idx, row in data.iterrows():
-        temps = pd.to_numeric(row[month_columns], errors='coerce').dropna()
+        temps = pd.to_numeric(row[MONTH_COLUMNS], errors='coerce').dropna()
         if not temps.empty:
             temp_range = temps.max() - temps.min()
             ranges.append((row["STATION_NAME"], temp_range, temps.max(), temps.min()))
@@ -75,12 +73,10 @@ def calculate_largest_temp_range(data):
 
 
 def calculate_temperature_stability(data):
-    month_columns = ["January","February","March","April","May","June",
-                     "July","August","September","October","November","December"]
     stability = []
     
     for idx, row in data.iterrows():
-        temps = pd.to_numeric(row[month_columns], errors='coerce').dropna()
+        temps = pd.to_numeric(row[MONTH_COLUMNS], errors='coerce').dropna()
         if not temps.empty:
             std_dev = temps.std() # Calculate standard deviation of the temperatures
             stability.append((row["STATION_NAME"], std_dev))
@@ -94,13 +90,11 @@ def calculate_temperature_stability(data):
             for station, std in stability:
                 if std == min_std:
                     f.write(f"Most Stable: Station {station}: StdDev {std:.1f}\u00B0C\n")
-                    # print(f"Most Stable: Station {station}: StdDev {std:.1f}\u00B0C")
    
 
             for station, std in stability:
                 if std == max_std:
                     f.write(f"Most Stable: Station {station}: StdDev {std:.1f}\u00B0C\n")
-                    # print(f"Most Variable: Station {station}: StdDev {std:.1f}\u00B0C")
 
 if __name__ == "__main__":
     data = load_temperature_data("resources/temperatures")
@@ -111,4 +105,3 @@ if __name__ == "__main__":
         calculate_seasonal_average(data)
         calculate_largest_temp_range(data)
         calculate_temperature_stability(data)
-        print("Analysis complete. Output files generated.")
