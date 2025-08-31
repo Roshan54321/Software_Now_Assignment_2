@@ -24,3 +24,12 @@ def draw_recursive_polygon(sides, length, depth):
         t.right(angle)
 
     turtle.done()
+
+def main():
+    sides = int(input("Enter the number of sides: "))
+    length = float(input("Enter the side length: "))
+    depth = int(input("Enter the recursion depth: "))
+
+    draw_recursive_polygon(sides, length, depth)
+
+main()
