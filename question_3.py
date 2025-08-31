@@ -1,22 +1,21 @@
-
 import turtle
 
-# Recursive function to draw one edge with outward-pointing triangles
-def draw_spiky_edge(t, length, depth):
+# Custom recursive function to draw one edge with outward-pointing triangles
+def draw_custom_spike(t, length, depth):
     if depth == 0:
         t.forward(length)
     else:
         length /= 3.0
-        draw_spiky_edge(t, length, depth - 1)
+        draw_custom_spike(t, length, depth - 1)
         t.right(60)
-        draw_spiky_edge(t, length, depth - 1)
+        draw_custom_spike(t, length, depth - 1)
         t.left(120)
-        draw_spiky_edge(t, length, depth - 1)
+        draw_custom_spike(t, length, depth - 1)
         t.right(60)
-        draw_spiky_edge(t, length, depth - 1)
+        draw_custom_spike(t, length, depth - 1)
 
 # Function to draw just one spiky segment (_\/_) when depth == 1
-def draw_single_spike():
+def draw_single_spike_segment():
     t = turtle.Turtle()
     t.speed(0)
     t.penup()
@@ -35,7 +34,7 @@ def draw_single_spike():
     turtle.done()
 
 # Function to draw the full polygon with recursive edges
-def draw_recursive_polygon(sides, length, depth):
+def draw_custom_polygon(sides, length, depth):
     t = turtle.Turtle()
     t.speed(0)
 
@@ -50,7 +49,7 @@ def draw_recursive_polygon(sides, length, depth):
 
     elif depth == 1:
         # Special case: draw _\/_
-        draw_single_spike()
+        draw_single_spike_segment()
         return
 
     else:
@@ -59,17 +58,18 @@ def draw_recursive_polygon(sides, length, depth):
         t.goto(-length / 2, length / 2)
         t.pendown()
         for _ in range(sides):
-            draw_spiky_edge(t, length, depth)
+            draw_custom_spike(t, length, depth)
             t.right(angle)
 
     turtle.done()
 
 # Main function to get user input and start drawing
-def main():
+def run_custom_pattern():
     sides = int(input("Enter the number of sides: "))
     length = float(input("Enter the side length: "))
     depth = int(input("Enter the recursion depth: "))
 
-    draw_recursive_polygon(sides, length, depth)
+    draw_custom_polygon(sides, length, depth)
 
-main()
+# Run the program
+run_custom_pattern()
