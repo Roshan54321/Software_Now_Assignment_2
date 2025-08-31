@@ -13,3 +13,14 @@ def draw_koch_edge(t, length, depth):
         draw_koch_edge(t, length, depth - 1)
         t.left(60)
         draw_koch_edge(t, length, depth - 1)
+
+def draw_recursive_polygon(sides, length, depth):
+    angle = 360 / sides
+    t = turtle.Turtle()
+    t.speed(0)  # Fastest drawing
+
+    for _ in range(sides):
+        draw_koch_edge(t, length, depth)
+        t.right(angle)
+
+    turtle.done()
