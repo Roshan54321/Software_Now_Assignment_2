@@ -48,7 +48,10 @@ def draw_recursive_polygon(sides, length, depth):
         t.pendown()
         t.forward(length)
 
-   
+    elif depth == 1:
+        # Special case: draw _\/_
+        draw_single_spike()
+        return
 
     else:
         angle = 360 / sides
