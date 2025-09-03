@@ -1,4 +1,8 @@
+# environment
 .env
+.DS_Store
+
+# resources
 resources/decrypted_text.txt
 resources/encrypted_text.txt
 resources/average_temp.txt
