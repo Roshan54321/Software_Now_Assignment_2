@@ -31,10 +31,20 @@ def main():
         length = float(input("Enter the length of each side: "))
         rec_depth = float(input("Enter the recursion depth: "))
 
-        t = Turtle()
+        # we are making turtle invisible for the offset
+        t = Turtle(visible=False)
         t.screen.title('Geometric Pattern - Polygon')
         ext_angle = 360 / no_of_sides
 
+        # making sure we draw at the center, so we offset it to the left and down by half the length of a side
+        # while moving the pen to the left, we don't want it to draw, so we are doing penup
+        t.penup()
+        t.goto(-(length / 2), -(length / 2))
+        t.pendown()
+        t.showturtle()
+
+        # using the fastest speed
+        t.speed(0)
         # we are drawing to the upper side, so we always use left turn
         make_polygon(t, no_of_sides, length, ext_angle, rec_depth)
         t.screen.mainloop()
