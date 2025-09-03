@@ -48,7 +48,7 @@ def calculate_seasonal_average(data):
         seasonal_sum[season] += valid_values.sum()
         seasonal_count[season] += valid_values.count()
     
-    with open("average_temp.txt", "w", encoding="utf-8") as f:
+    with open("resources/average_temp.txt", "w", encoding="utf-8") as f:
         for season in ["Summer","Autumn","Winter","Spring"]:
             avg = seasonal_sum[season] / seasonal_count[season] #avg = total / count
             f.write(f"{season}: {avg:.1f}\u00B0C\n")
@@ -66,7 +66,7 @@ def calculate_largest_temp_range(data):
     # Write the station with max range to file
     if ranges:
         max_range = max(ranges, key=lambda x: x[1])[1]
-        with open("largest_temp_range_station.txt", "w", encoding="utf-8") as f:
+        with open("resources/largest_temp_range_station.txt", "w", encoding="utf-8") as f:
             for station, r, t_max, t_min in ranges:
                 if r == max_range:
                     f.write(f"Station {station}: Range {r:.1f}\u00B0C (Max: {t_max:.1f}\u00B0C, Min: {t_min:.1f}\u00B0C)\n")
@@ -86,7 +86,7 @@ def calculate_temperature_stability(data):
         min_std = min(stability, key=lambda x: x[1])[1] # Find smallest standard deviation (most stable)
         max_std = max(stability, key=lambda x: x[1])[1] # Find largest standard deviation (most variable)
         
-        with open("temperature_stability_stations.txt", "w", encoding="utf-8") as f:
+        with open("resources/temperature_stability_stations.txt", "w", encoding="utf-8") as f:
             for station, std in stability:
                 if std == min_std:
                     f.write(f"Most Stable: Station {station}: StdDev {std:.1f}\u00B0C\n")
