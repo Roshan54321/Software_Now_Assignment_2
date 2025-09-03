@@ -96,12 +96,17 @@ def calculate_temperature_stability(data):
                 if std == max_std:
                     f.write(f"Most Stable: Station {station}: StdDev {std:.1f}\u00B0C\n")
 
+def main():
+    try:
+        data = load_temperature_data("resources/temperatures")
+        if data.empty:
+            print("No data found in resources/temperatures folder.")
+        else:
+            calculate_seasonal_average(data)
+            calculate_largest_temp_range(data)
+            calculate_temperature_stability(data)
+    except Exception as e:
+        print("Error:", e)
+
 if __name__ == "__main__":
-    data = load_temperature_data("resources/temperatures")
-    
-    if data.empty:
-        print("No data found in resources/temperatures folder.")
-    else:
-        calculate_seasonal_average(data)
-        calculate_largest_temp_range(data)
-        calculate_temperature_stability(data)
+    main()

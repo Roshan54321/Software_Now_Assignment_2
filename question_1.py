@@ -76,7 +76,7 @@ def main():
     except ValueError:
         print("Invalid input. Enter two integers separated by a space.")
     except FileNotFoundError:
-        print("File not found. Make sure raw_text.txt exists in resources folder.")
+        print("File not found. Make sure the file exists in resources folder.")
     except Exception as e:
         print("Error:", e)
 
