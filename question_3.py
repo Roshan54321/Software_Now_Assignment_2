@@ -29,7 +29,7 @@ def main():
     try:
         no_of_sides = int(input("Enter the number of sides of the polygon: "))
         length = float(input("Enter the length of each side: "))
-        rec_depth = float(input("Enter the recursion depth: "))
+        rec_depth = int(input("Enter the recursion depth: "))
 
         # we are making turtle invisible for the offset
         t = Turtle(visible=False)
