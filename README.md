@@ -33,10 +33,6 @@ Running the programs:
 
 
 
-Testing:
-
-Each question includes test cases to verify functionality
-
 
 
 Collaboration:
